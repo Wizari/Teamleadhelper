@@ -7,11 +7,11 @@ import javax.persistence.Table
 @Entity
 @Table(name = "project")
 class Project(
-        id: Long?,
+        id: Int?,
         @Column(name = "Code")
         var code: String,
         @Column(name = "Name")
         var name: String
-) : AbstractEntity<Long>(id) {
+) : AbstractEntity<Int>(id) {
 
 }

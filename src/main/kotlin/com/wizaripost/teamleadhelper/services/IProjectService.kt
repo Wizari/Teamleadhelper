@@ -1,4 +1,6 @@
 package com.wizaripost.teamleadhelper.services
 
-interface IProjectService {
+import com.wizaripost.teamleadhelper.domain.entity.Project
+
+interface IProjectService: ICrudService<Int, Project> {
 }
