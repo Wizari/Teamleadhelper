@@ -1,13 +1,16 @@
 package com.wizaripost.teamleadhelper
 
-import org.junit.jupiter.api.Test
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Profile
 
-@SpringBootTest
-class TeamLeadHelperApplicationTests {
+@SpringBootApplication
+class TeamLeadHelperApplicationTests
 
-	@Test
-	fun contextLoads() {
-	}
 
+fun main(args: Array<String>) {
+    runApplication<TeamLeadHelperApplicationTests>(*args)
 }
+

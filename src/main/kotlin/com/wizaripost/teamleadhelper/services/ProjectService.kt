@@ -1,16 +1,26 @@
 package com.wizaripost.teamleadhelper.services
 
 import com.wizaripost.teamleadhelper.domain.entity.Project
-import com.wizaripost.teamleadhelper.domain.repositories.ProjectRepository
+import com.wizaripost.teamleadhelper.domain.repositories.IProjectRepository
+import com.wizaripost.teamleadhelper.dto.ProjectCreateForm
+import com.wizaripost.teamleadhelper.dto.ProjectDTO
+import com.wizaripost.teamleadhelper.utils.convertTo
+import org.springframework.stereotype.Service
 
-class ProjectService(repository: ProjectRepository) : IProjectService{
+@Service
+class ProjectService(val repository: IProjectRepository) : IProjectService{
 
-    override fun getOne(id: Int): Project {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun create(form: ProjectCreateForm): ProjectDTO {
+        val entity = this.repository.save(Project(form.code, form.name))
+        return convertTo(entity)
     }
 
-    override fun save(t: Project): Project {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun update(project: ProjectDTO): ProjectDTO {
+        val entity = this.repository.save(convertTo(project))
+        return convertTo(entity)
     }
+
 
 }
+
+
