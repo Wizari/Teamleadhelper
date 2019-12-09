@@ -4,7 +4,10 @@ import com.wizaripost.teamleadhelper.domain.entity.Project
 import com.wizaripost.teamleadhelper.domain.repositories.IProjectRepository
 import com.wizaripost.teamleadhelper.dto.ProjectCreateForm
 import com.wizaripost.teamleadhelper.dto.ProjectDTO
+import com.wizaripost.teamleadhelper.dto.ProjectUpdateForm
+import com.wizaripost.teamleadhelper.exception.EntityNotFoundException
 import com.wizaripost.teamleadhelper.utils.convertTo
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,13 +18,21 @@ class ProjectService(val repository: IProjectRepository) : IProjectService{
         return convertTo(entity)
     }
 
-    override fun update(project: ProjectDTO): ProjectDTO {
-        val entity = this.repository.save(convertTo(project))
-        return convertTo(entity)
+    override fun update(form: ProjectUpdateForm): ProjectDTO {
+        val project: Project
+        synchronized(this){
+            project = (this.repository.findByIdOrNull(form.id) ?: throw EntityNotFoundException())
+                    .apply {
+                        code = form.code
+                        name = form.name
+                    }
+            this.repository.save(project)
+        }
+        return convertTo(project)
     }
 
     override fun getOne(id: Int): ProjectDTO {
-        return convertTo(this.repository.getOne(id))
+        return convertTo(this.repository.findByIdOrNull(id) ?: throw EntityNotFoundException())
     }
 
     override fun getAll(): List<ProjectDTO> {
@@ -29,7 +40,10 @@ class ProjectService(val repository: IProjectRepository) : IProjectService{
     }
 
     override fun delete(id: Int) {
-        this.repository.deleteById(id)
+        synchronized(this){
+            this.repository.deleteById(id)
+        }
+
     }
 
 //    override fun saveOrCeate(form: ProjectCreateForm): ProjectDTO {

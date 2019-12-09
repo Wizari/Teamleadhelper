@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.*
 
 
 @Controller
-class ProjectController(projectService: ProjectService) {
+class ProjectController(val projectService: ProjectService) {
 
-    @Autowired
-    lateinit var projectService: IProjectService
 
     @GetMapping("/projects/list")
     fun getProjectsList(model: Model): String {
